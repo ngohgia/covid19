@@ -1,0 +1,62 @@
+<html ng-app="CovidApp">
+  <head>
+    <title>Covid-19 Chest CT Segmentor</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="../static/main.css">
+    <link rel="icon" type="image/png" href="../static/favicon.png">
+  </head>
+  <body ng-controller="CovidController" ng-keydown="onKeyDown($event)">
+    <div class="container d-flex w-100 h-100 p-3 mx-auto flex-column">
+      <main role="main" class="inner">
+        <div class="input-container">
+          <h1 class="header">Covid-19 Chest CT Segmentor</h1>
+        <div class="container-fluid">
+          <div class="row">
+            {% raw %}
+              <div class="col-9">
+                <div class="image-viewer">
+                  <div class="image-viewer__underlay" ng-style="{ 'background-image': 'url(' + ctSlices[currentSlice] + ')'}">
+                    <div class="image-viewer__pred-overlay"
+                         ng-style="{ 'background-image': 'url(' + predSlices[currentSlice] + ')'}"
+                         ng-show="currentOverlay == 1"></div>
+                    <div class="image-viewer__ref-overlay"
+                         ng-style="{ 'background-image': 'url(' + refSlices[currentSlice] + ')'}"
+                         ng-show="currentOverlay == 2"></div>
+                  </div>
+                </div>
+                <p class="image-viewer__label" ng-show="currentOverlay == 0">CT slice</p>
+                <p class="image-viewer__label" ng-show="currentOverlay == 1">Prediction</p>
+                <p class="image-viewer__label" ng-show="currentOverlay == 2">Reference</p>
+              </div>
+              <div class="col-3 image-controller">
+                <div class="image-controller__col image-controller__col--left">
+                  <button type="button"
+                    class="btn btn-outline-secondary"
+                    ng-click="changeSlice(-1)">Prev slice</button>
+                </div>
+                <div class="image-controller__col image-controller__col--center">
+                  <button type="button"
+                    class="btn btn-outline-secondary image-controller__button"
+                    ng-click="changeOverlay(-1)">Prev overlay</button>
+                  <button type="button"
+                    class="btn btn-outline-secondary image-controller__button"
+                    ng-click="changeOverlay(1)">Next overlay</button>
+                </div>
+                <div class="image-controller__col image-controller__col--right">
+                  <button type="button"
+                    class="btn btn-outline-secondary"
+                    ng-click="changeSlice(1)">Next slice</button>
+                </div>
+              </div>
+            {% endraw %}
+        </div>
+      </main>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script src="{{ url_for('static', filename='main.js') }}"></script>
+  </body>
+</html>
