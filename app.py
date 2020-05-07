@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, request, send_from_directory
+from flask import Flask, render_template, request, send_from_directory, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from config import Config
 
@@ -13,7 +13,13 @@ from models import *
 
 @app.route('/', methods=['GET'])
 def index():
-    return render_template('index.html')
+    result = db.session.query(Result).get(1) # validation results
+    data = {
+      'origUrls': result.orig_urls,
+      'predUrls': result.pred_urls,
+      'refUrls': result.ref_urls,
+    }
+    return render_template('index.html', flaskData=data)
 
 @app.route('/eval/<path:filename>')
 def eval(filename):

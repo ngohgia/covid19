@@ -15,7 +15,7 @@ manager.add_command('db', MigrateCommand)
 
 @manager.command
 def seed():
-    "Add seed data to results table."
+    print("Add seed data to results table.")
     NUM_VAL_SAMPLES = 20
     db.session.add(Result(
       [("/eval/orig/%d.jpg" % i) for i in range(NUM_VAL_SAMPLES)],

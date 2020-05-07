@@ -26,27 +26,16 @@
       $scope.loading = false;
       $scope.error = false;
 
-      vm.numSlices = 3;
-      vm.numOverlays = 3;
+      // $log.log(data);
+
       $scope.currentSlice = 0;
       $scope.currentOverlay = 1;
-      $scope.ctSlices= [
-        '/eval/orig/0.jpg',
-        '/eval/orig/1.jpg',
-        '/eval/orig/2.jpg',
-      ];
+      $scope.ctSlices = data.origUrls;
+      $scope.predSlices = data.predUrls;
+      $scope.refSlices = data.refUrls;
+      vm.numSlices = $scope.ctSlices.length;
+      vm.numOverlays = ($scope.refSlices.length > 0 ? 3 : 2);
 
-      $scope.predSlices= [
-        '/eval/pred/0.png',
-        '/eval/pred/1.png',
-        '/eval/pred/2.png',
-      ];
-
-      $scope.refSlices= [
-        '/eval/ref/0.png',
-        '/eval/ref/1.png',
-        '/eval/ref/2.png',
-      ];
 
       $scope.changeSlice = function(delta) {
         $scope.currentSlice = ($scope.currentSlice + vm.numSlices + delta) % vm.numSlices;
