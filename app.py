@@ -1,7 +1,15 @@
 import os
 from flask import Flask, render_template, request, send_from_directory
+from flask_sqlalchemy import SQLAlchemy
+from config import Config
 
 app = Flask(__name__)
+app.config.from_object(Config)
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+db = SQLAlchemy(app)
+
+from models import *
 
 @app.route('/', methods=['GET'])
 def index():
