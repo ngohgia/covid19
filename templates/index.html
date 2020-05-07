@@ -32,24 +32,33 @@
                 <p class="image-viewer__label" ng-show="currentOverlay == 1">Prediction</p>
                 <p class="image-viewer__label" ng-show="currentOverlay == 2">Reference</p>
               </div>
-              <div class="col-3 image-controller">
-                <div class="image-controller__col image-controller__col--left">
-                  <button type="button"
-                    class="btn btn-outline-secondary"
-                    ng-click="changeSlice(-1)">Prev slice</button>
+              <div class="col-3">
+                <div class="image-controller">
+                  <div class="image-controller__col image-controller__col--left">
+                    <button type="button"
+                      class="btn btn-outline-secondary"
+                      ng-click="changeSlice(-1)">Prev slice</button>
+                  </div>
+                  <div class="image-controller__col image-controller__col--center">
+                    <button type="button"
+                      class="btn btn-outline-secondary image-controller__button"
+                      ng-click="changeOverlay(-1)">Prev overlay</button>
+                    <button type="button"
+                      class="btn btn-outline-secondary image-controller__button"
+                      ng-click="changeOverlay(1)">Next overlay</button>
+                  </div>
+                  <div class="image-controller__col image-controller__col--right">
+                    <button type="button"
+                      class="btn btn-outline-secondary"
+                      ng-click="changeSlice(1)">Next slice</button>
+                  </div>
                 </div>
-                <div class="image-controller__col image-controller__col--center">
-                  <button type="button"
-                    class="btn btn-outline-secondary image-controller__button"
-                    ng-click="changeOverlay(-1)">Prev overlay</button>
-                  <button type="button"
-                    class="btn btn-outline-secondary image-controller__button"
-                    ng-click="changeOverlay(1)">Next overlay</button>
-                </div>
-                <div class="image-controller__col image-controller__col--right">
-                  <button type="button"
-                    class="btn btn-outline-secondary"
-                    ng-click="changeSlice(1)">Next slice</button>
+                <div class="image-uploader">
+                  <form action="/upload" method="post" 
+                    enctype="multipart/form-data">
+                    <input type="file" name="file" />
+                    <input type="submit"/>
+                  </form>
                 </div>
               </div>
             {% endraw %}

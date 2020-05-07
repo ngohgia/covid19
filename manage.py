@@ -18,9 +18,9 @@ def seed():
     print("Add seed data to results table.")
     NUM_VAL_SAMPLES = 20
     db.session.add(Result(
-      [("/eval/orig/%d.jpg" % i) for i in range(NUM_VAL_SAMPLES)],
-      [("/eval/pred/%d.png" % i) for i in range(NUM_VAL_SAMPLES)],
-      [("/eval/ref/%d.png" % i) for i in range(NUM_VAL_SAMPLES)],
+      [("/validation/unet_lr0.0001_seed23_losstype0_augTrue_ver1/orig/%d.jpg" % i) for i in range(NUM_VAL_SAMPLES)],
+      [("/validation/unet_lr0.0001_seed23_losstype0_augTrue_ver1/pred/%d.png" % i) for i in range(NUM_VAL_SAMPLES)],
+      [("/validation/unet_lr0.0001_seed23_losstype0_augTrue_ver1/ref/%d.png" % i) for i in range(NUM_VAL_SAMPLES)],
     ))
     db.session.commit()
 

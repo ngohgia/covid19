@@ -1,6 +1,24 @@
 (function () {
   'use strict';
-  var app = angular.module("CovidApp", []);
+  var app = angular.module("CovidApp", [])
+    .directive("ngUploadChange",function(){
+      return{
+        scope:{
+          ngUploadChange:"&"
+        },
+        link:function($scope, $element, $attrs){
+          $element.on("change",function(event){
+            $scope.$apply(function(){
+              $scope.ngUploadChange({$event: event})
+            })
+          })
+          $scope.$on("$destroy",function(){
+            $element.off();
+          });
+        }
+      }
+    });
+
   app.run(function($rootScope) {
     $rootScope.onKeyDown = function(e) {
       if (e.keyCode === 37) {
@@ -57,6 +75,19 @@
       $scope.$on("arrowRight", function() {
         $scope.changeOverlay(1);
       });
+
+      $scope.onUploadChange = function($event){
+        var files = $event.target.files;
+
+        let formData = new FormData();
+        formData.append('files', files);
+        return $http.post('/upload', formData).then(function successCallback(response) {
+          $log.log(response);
+          $scope.error = false;
+        }, function errorCallback(response) {
+          $scope.error = response.statusText;
+        });
+      }
     }
   ]);
 }());

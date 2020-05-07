@@ -1,3 +1,5 @@
 .DS_Store
 env
+trained_models
+uploads
 __pycache__
