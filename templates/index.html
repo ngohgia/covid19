@@ -19,6 +19,9 @@
           <div class="row">
             {% raw %}
               <div class="col-sm-12 col-md-7 col--left">
+                <div class="loading-overlay" ng-show="loading">
+                  <img class="loader" src="/static/loader.gif" ng-show="!error">
+                </div>
                 <div class="image-viewer" ng-click="changeOverlay(1)">
                   <div class="image-viewer__underlay" ng-style="{ 'background-image': 'url(' + ctSlices[currentSlice] + ')'}">
                     <div class="image-viewer__pred-overlay"
@@ -42,6 +45,7 @@
                 </div>
               </div>
               <div class="col-sm-12 col-md-5 col--right">
+                <div class="loading-overlay" ng-show="loading"></div>
                 <div class="image-controller">
                   <ul>
                     <li>Use <kbd ng-click="changeSlice(1)">↑ Up</kbd> and <kbd ng-click="changeSlice(-1)">↓ Down</kbd> buttons to move up/down the slices.

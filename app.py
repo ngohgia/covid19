@@ -61,13 +61,13 @@ def upload_file():
     from app import call_predict
 
     if 'file' not in request.files:
-        raise("No file part in request")
-        return redirect(request.url)
+        flash("No file part in request")
+        return redirect("/")
 
     file = request.files['file']
     if file.filename == '':
-        raise("No selected file")
-        return redirect(request.url)
+        flash("No selected file")
+        return redirect("/")
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
         input_file_path = os.path.join(app.config['UPLOAD_DIR'], filename)
@@ -83,7 +83,7 @@ def upload_file():
         )
         return redirect("/results/" + job.id)
     else:
-        raise("Invalid file type")
+        flash("Invalid file type")
         return redirect(request.url)
 
 @app.route("/results/<job_key>", methods=['GET', 'POST'])
@@ -91,19 +91,24 @@ def get_results(job_key):
     if request.method == 'GET':
         return render_template('index.html', flaskData={}, flaskJobKey=job_key)
     else:
-        print(job_key)
-        job = Job.fetch(job_key, connection=conn)
+        try:
+            job = Job.fetch(job_key, connection=conn)
 
-        if job.is_finished:
-            result = Result.query.filter_by(id=job.result).first()
-            data = {
-              'origUrls': result.orig_urls,
-              'predUrls': result.pred_urls,
-              'refUrls': result.ref_urls,
-            }
-            return jsonify(data)
-        else:
-            return "Crunching!", 202
+            if job.is_finished:
+                result = Result.query.filter_by(id=job.result).first()
+                data = {
+                  'origUrls': result.orig_urls,
+                  'predUrls': result.pred_urls,
+                  'refUrls': result.ref_urls,
+                }
+                return jsonify(data)
+            else:
+                return "Crunching!", 202
+        except:
+            errors.append(
+                "Unable to retrieve result. There's no result with the requested ID"
+            )
+            return {"error": errors} 
 
 @app.route('/validation/<path:filename>')
 def validation(filename):
