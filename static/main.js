@@ -21,7 +21,7 @@
 
   app.run(function($rootScope) {
     $rootScope.onKeyDown = function(e) {
-      if (e.keyCode === 37) {
+      if (e.keyCode === 37 || e.keyCode === 32) {
         $rootScope.$broadcast("arrowLeft");
         e.preventDefault();  
       } else if (e.keyCode === 38) {

@@ -1,6 +1,6 @@
 <html ng-app="CovidApp">
   <head>
-    <title>Covid-19 Chest CT Segmentor</title>
+    <title>Covid-19 Chest CT Segmentation</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="../static/main.css">
@@ -14,12 +14,12 @@
     <div class="container d-flex w-100 h-100 p-3 mx-auto flex-column">
       <main role="main" class="inner">
         <div class="input-container">
-          <h1 class="header">Covid-19 Chest CT Segmentor</h1>
+          <h1 class="header">Covid-19 Chest CT Segmentation</h1>
         <div class="container-fluid">
           <div class="row">
             {% raw %}
-              <div class="col-9">
-                <div class="image-viewer">
+              <div class="col-sm-12 col-md-7 col--left">
+                <div class="image-viewer" ng-click="changeOverlay(1)">
                   <div class="image-viewer__underlay" ng-style="{ 'background-image': 'url(' + ctSlices[currentSlice] + ')'}">
                     <div class="image-viewer__pred-overlay"
                          ng-style="{ 'background-image': 'url(' + predSlices[currentSlice] + ')'}"
@@ -30,37 +30,34 @@
                          ng-show="currentOverlay == 2"></div>
                   </div>
                 </div>
-                <p class="image-viewer__label" ng-show="currentOverlay == 0">CT slice</p>
-                <p class="image-viewer__label" ng-show="currentOverlay == 1">Prediction</p>
-                <p class="image-viewer__label" ng-show="currentOverlay == 2">Reference</p>
-              </div>
-              <div class="col-3">
-                <div class="image-controller">
-                  <div class="image-controller__col image-controller__col--left">
-                    <button type="button"
-                      class="btn btn-outline-secondary"
-                      ng-click="changeSlice(-1)">Prev slice</button>
-                  </div>
-                  <div class="image-controller__col image-controller__col--center">
-                    <button type="button"
-                      class="btn btn-outline-secondary image-controller__button"
-                      ng-click="changeOverlay(-1)">Prev overlay</button>
-                    <button type="button"
-                      class="btn btn-outline-secondary image-controller__button"
-                      ng-click="changeOverlay(1)">Next overlay</button>
-                  </div>
-                  <div class="image-controller__col image-controller__col--right">
-                    <button type="button"
-                      class="btn btn-outline-secondary"
-                      ng-click="changeSlice(1)">Next slice</button>
+                <div>
+                  <p class="image-viewer__label" ng-show="currentOverlay == 0">CT slice</p>
+                  <p class="image-viewer__label" ng-show="currentOverlay == 1">Prediction</p>
+                  <p class="image-viewer__label" ng-show="currentOverlay == 2">Reference</p>
+                  <div class="image-viewer__pallete">
+                    <div><span class="image-viewer__pallete__color image-viewer__pallete__color--gg"></span> Ground glass</div>
+                    <div><span class="image-viewer__pallete__color image-viewer__pallete__color--con"></span> Consolidation</div>
+                    <div><span class="image-viewer__pallete__color image-viewer__pallete__color--pe"></span> Pleural effusion</div>
                   </div>
                 </div>
+              </div>
+              <div class="col-sm-12 col-md-5 col--right">
+                <div class="image-controller">
+                  <ul>
+                    <li>Use <kbd ng-click="changeSlice(1)">↑ Up</kbd> and <kbd ng-click="changeSlice(-1)">↓ Down</kbd> buttons to move up/down the slices.
+                    <li>Use <kbd ng-click="changeOverlay(-1)">← Left</kbd> and <kbd ng-click="changeOverlay(1)">Right →</kbd> buttons to toggle between prediction/reference segmentation (if there is). Or use <kbd ng-click="changeSlice(1)">Space</kbd>, clicking/touching the image to toggle.
+                  </ul>
+                </div>
                 <div class="image-uploader">
-                  <form action="/upload" method="post" 
-                    enctype="multipart/form-data">
+                  To try the model's segmentation on a new image, select a Chest CT image file in Nifti format (*.nii or *.nii.gz) and hit Submit below
+                  <form class="image-uploader__form" action="/upload" method="post" enctype="multipart/form-data">
                     <input type="file" name="file" />
                     <input type="submit"/>
                   </form>
+                </div>
+                <div class="credits">
+                  All segmentation models trained by <a href="https://github.com/evanmy" target="_blank">@evan</a>.<br>
+                  Website sourcecode on <a href="https://github.com/ngohgia/covid19">github</a>
                 </div>
               </div>
             {% endraw %}
