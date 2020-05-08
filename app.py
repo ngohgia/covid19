@@ -32,7 +32,7 @@ def index():
       'predUrls': result.pred_urls,
       'refUrls': result.ref_urls,
     }
-    return render_template('index.html', flaskData=data)
+    return render_template('index.html', flaskData=data, flaskJobKey='')
 
 def allowed_file(filename):
     extension = ".".join(filename.split('.')[1:])
@@ -81,26 +81,29 @@ def upload_file():
         job = q.enqueue_call(
             func=call_predict, args=(input_file_path, rand_id), result_ttl=5000
         )
-        print(job.id)
-        return redirect("/")
+        return redirect("/results/" + job.id)
     else:
         raise("Invalid file type")
         return redirect(request.url)
 
-@app.route("/results/<job_key>", methods=['GET'])
+@app.route("/results/<job_key>", methods=['GET', 'POST'])
 def get_results(job_key):
-    job = Job.fetch(job_key, connection=conn)
-
-    if job.is_finished:
-        result = db.session.query(Result).get(job.result)
-        data = {
-          'origUrls': result.orig_urls,
-          'predUrls': result.pred_urls,
-          'refUrls': result.ref_urls,
-        }
-        return render_template('index.html', flaskData=data)
+    if request.method == 'GET':
+        return render_template('index.html', flaskData={}, flaskJobKey=job_key)
     else:
-        return "Crunching!", 202
+        print(job_key)
+        job = Job.fetch(job_key, connection=conn)
+
+        if job.is_finished:
+            result = Result.query.filter_by(id=job.result).first()
+            data = {
+              'origUrls': result.orig_urls,
+              'predUrls': result.pred_urls,
+              'refUrls': result.ref_urls,
+            }
+            return jsonify(data)
+        else:
+            return "Crunching!", 202
 
 @app.route('/validation/<path:filename>')
 def validation(filename):

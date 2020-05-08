@@ -1,8 +1,9 @@
 html,
 body {
   height: 100%;
-  background-color: #fff;
-  color: #223464;
+  background-color: #6B7C93;
+  color: rgb(70, 70, 70);
+  text-rendering: optimizeLegibility;
 }
 
 body {
@@ -26,6 +27,7 @@ body {
 .header {
   font-size: 30px;
   line-height: 36px;
+  color: #6772E5;
 }
 
 .image-viewer {

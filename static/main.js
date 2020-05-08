@@ -44,17 +44,46 @@
       $scope.loading = false;
       $scope.error = false;
 
-      // $log.log(data);
+      if (jobKey) {
+        $scope.loading = true;
+        pollForResults(jobKey);
+      } else {
+        assignData(data);
+      }
 
-      $scope.currentSlice = 0;
-      $scope.currentOverlay = 1;
-      $scope.ctSlices = data.origUrls;
-      $scope.predSlices = data.predUrls;
-      $scope.refSlices = data.refUrls;
-      vm.numSlices = $scope.ctSlices.length;
-      vm.numOverlays = ($scope.refSlices.length > 0 ? 3 : 2);
-      $scope.hasRef = (vm.numOverlays == 3);
+      function assignData(data) {
+        $scope.currentSlice = 0;
+        $scope.currentOverlay = 1;
+        $scope.ctSlices = data.origUrls;
+        $scope.predSlices = data.predUrls;
+        $scope.refSlices = data.refUrls;
+        vm.numSlices = $scope.ctSlices.length;
+        vm.numOverlays = ($scope.refSlices.length > 0 ? 3 : 2);
+        $scope.hasRef = (vm.numOverlays == 3);
+      }
 
+      function pollForResults(jobKey) {
+        var timeout = "";
+
+        $log.log("Polling");
+        var poller = function() {
+          $http.post('/results/' + jobKey, {}).
+            success(function(data, status, headers, config) {
+              if (status === 202) {
+                $log.log(data, status);
+                $scope.error = data.statusText;
+              } else if (status === 200){
+                $scope.loading = false;
+                $log.log(data);
+                assignData(data);
+                $timeout.cancel(timeout);
+                return false;
+              }
+              timeout = $timeout(poller, 2000);
+            });
+        };
+        poller();
+      }
 
       $scope.changeSlice = function(delta) {
         $scope.currentSlice = ($scope.currentSlice + vm.numSlices + delta) % vm.numSlices;
