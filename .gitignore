@@ -3,4 +3,5 @@ env
 trained_models
 uploads
 results
+training_images
 __pycache__
