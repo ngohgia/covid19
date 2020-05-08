@@ -17,6 +17,7 @@
         <div class="container-fluid">
           <div class="row">
             {% raw %}
+              {{ refSlices.length }}
               <div class="col-9">
                 <div class="image-viewer">
                   <div class="image-viewer__underlay" ng-style="{ 'background-image': 'url(' + ctSlices[currentSlice] + ')'}">
@@ -24,6 +25,7 @@
                          ng-style="{ 'background-image': 'url(' + predSlices[currentSlice] + ')'}"
                          ng-show="currentOverlay == 1"></div>
                     <div class="image-viewer__ref-overlay"
+                         ng-if="hasRef"
                          ng-style="{ 'background-image': 'url(' + refSlices[currentSlice] + ')'}"
                          ng-show="currentOverlay == 2"></div>
                   </div>

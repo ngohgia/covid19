@@ -53,6 +53,7 @@
       $scope.refSlices = data.refUrls;
       vm.numSlices = $scope.ctSlices.length;
       vm.numOverlays = ($scope.refSlices.length > 0 ? 3 : 2);
+      $scope.hasRef = (vm.numOverlays == 3);
 
 
       $scope.changeSlice = function(delta) {
