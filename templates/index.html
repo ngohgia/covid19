@@ -34,9 +34,9 @@
                   </div>
                 </div>
                 <div>
-                  <p class="image-viewer__label" ng-show="currentOverlay == 0">CT slice</p>
-                  <p class="image-viewer__label" ng-show="currentOverlay == 1">Prediction</p>
-                  <p class="image-viewer__label" ng-show="currentOverlay == 2">Reference</p>
+                  <p class="image-viewer__label" ng-show="currentOverlay == 0">Slice {{ currentSlice +1 }} - CT</p>
+                  <p class="image-viewer__label" ng-show="currentOverlay == 1">Slice {{ currentSlice +1 }} - Prediction</p>
+                  <p class="image-viewer__label" ng-show="currentOverlay == 2">Slice {{ currentSlice +1 }} - Ground-truth</p>
                   <div class="image-viewer__pallete">
                     <div><span class="image-viewer__pallete__color image-viewer__pallete__color--gg"></span> Ground glass</div>
                     <div><span class="image-viewer__pallete__color image-viewer__pallete__color--con"></span> Consolidation</div>

@@ -1,6 +1,7 @@
 """Input Libraries"""
 import os
 import torch
+import resource
 import numpy as np
 import SimpleITK as sitk
 from lungmask import utils
@@ -191,6 +192,5 @@ def predict(input_file_path, base_dirname):
            ct_scan_image_paths.append(ct_scan_image_path)
            pred_image_paths.append(pred_image_path)
 
-           if i == 3:
-               break
+   print('Memory usage: %s (GB)' % (resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 1e+9))
    return { 'origUrls': ct_scan_image_paths, 'predUrls': pred_image_paths, 'refUrls': ref_image_paths }

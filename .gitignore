@@ -5,4 +5,5 @@ uploads
 results
 training_images
 dump.rdb 
+migrations
 __pycache__
